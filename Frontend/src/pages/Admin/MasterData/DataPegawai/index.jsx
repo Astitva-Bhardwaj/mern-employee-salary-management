@@ -6,7 +6,7 @@ import { FaRegEdit, FaPlus } from 'react-icons/fa';
 import { BsTrash3 } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-import { deleteDataPegawai, getDataPegawai, getMe } from '../../../../config/redux/action';
+import { deleteDataPegawai, getDataJabatan, getDataPegawai, getMe } from '../../../../config/redux/action';
 import { BiSearch } from 'react-icons/bi';
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight, MdOutlineKeyboardArrowDown } from 'react-icons/md';
 
@@ -20,6 +20,7 @@ const DataPegawai = () => {
     const navigate = useNavigate();
     const { isError, user } = useSelector((state) => state.auth);
     const { dataPegawai } = useSelector((state) => state.dataPegawai);
+    const { dataJabatan } = useSelector((state) => state.dataJabatan);
 
     const totalPages = Math.ceil(dataPegawai.length / ITEMS_PER_PAGE);
 
@@ -82,9 +83,44 @@ const DataPegawai = () => {
         });
     };
 
+    const escapeCsvValue = (value) => `"${String(value ?? '').replace(/"/g, '""')}"`;
+
+    const handleDownloadCsv = () => {
+        const salaryByDepartment = dataJabatan.reduce((accumulator, jabatan) => {
+            accumulator[jabatan.nama_jabatan] = jabatan.gaji_pokok;
+            return accumulator;
+        }, {});
+
+        const csvHeaders = ['Name', 'Designation', 'Department', 'Salary'];
+        const csvRows = filteredDataPegawai.map((pegawai) => {
+            const salary = salaryByDepartment[pegawai.jabatan] ?? '';
+            return [
+                escapeCsvValue(pegawai.nama_pegawai),
+                escapeCsvValue(pegawai.designation),
+                escapeCsvValue(pegawai.jabatan),
+                escapeCsvValue(salary),
+            ].join(',');
+        });
+
+        const csvContent = [csvHeaders.join(','), ...csvRows].join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const fileUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.setAttribute('download', 'employee-list.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(fileUrl);
+    };
+
     useEffect(() => {
         dispatch(getDataPegawai(startIndex, endIndex));
     }, [dispatch, startIndex, endIndex]);
+
+    useEffect(() => {
+        dispatch(getDataJabatan());
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(getMe());
@@ -155,6 +191,11 @@ const DataPegawai = () => {
                     </span>
                 </ButtonOne>
             </Link>
+            <div className='mt-3'>
+                <ButtonOne onClick={handleDownloadCsv}>
+                    <span>Download CSV</span>
+                </ButtonOne>
+            </div>
             <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 mt-6">
                 <div className="flex justify-between items-center mt-4 flex-col md:flex-row md:justify-between">
                     <div className="relative flex-1 md:mr-2 mb-4 md:mb-0">
