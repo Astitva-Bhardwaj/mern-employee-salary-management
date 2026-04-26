@@ -3,6 +3,76 @@
 SiPeKa (Employee Payroll System) is a system used by companies to manage employee payroll processes efficiently and accurately. This system plays a key role in automating various tasks related to payroll, such as calculating payroll, processing attendance, and paying employee wages.<br/> In SiPeKa, employee information such as personal data, position and salary level is stored centrally. Every month, the system will retrieve employee attendance data and perform salary calculations based on the available information. This includes factors such as relevant hours worked, leave, overtime and deductions.</h5>
 <br/>
 
+## Assignment Submission Notes (DeepThought - April 2026)
+
+### Chosen HRMS and Why
+I chose `berthutapea/mern-employee-salary-management` because it already provides employee, attendance, salary, and payslip modules in a React + Node/Express + MySQL stack, which matches the assignment scope and allows focused feature delivery instead of rebuilding core HRMS flows.
+
+### AI Tools Used
+- Cursor AI (primary pair programmer): codebase reading, implementation, refactoring, validation checks.
+- ChatGPT/Claude-style prompting workflow inside Cursor: generating validation edge cases, commit message drafting, and troubleshooting DB/session issues.
+
+### Setup Instructions (Verified Locally)
+
+#### Prerequisites
+- Node.js 18+
+- MySQL running locally
+- Git
+
+#### 1) Clone and install dependencies
+```bash
+git clone <your-fork-url>
+cd mern-employee-salary-management
+
+cd Backend
+npm install
+
+cd ../Frontend
+npm install
+```
+
+#### 2) Create database
+Run in MySQL:
+```sql
+CREATE DATABASE IF NOT EXISTS sipeka_db;
+```
+
+#### 3) Configure backend
+Update `Backend/config/Database.js` with your local credentials (host/user/password/database).
+
+Create `Backend/.env`:
+```env
+APP_PORT=5000
+SESS_SECRET=your-random-secret
+```
+
+#### 4) Run backend and frontend
+Backend terminal:
+```bash
+cd Backend
+node index.js
+```
+
+Frontend terminal:
+```bash
+cd Frontend
+npm run dev
+```
+
+Open the Vite URL shown in terminal (usually `http://localhost:5173` or `http://localhost:5174`).
+
+### Notes on Tickets / Implementation Choices
+- LF-101 was implemented as a frontend-only fix because date format was a display concern in payslip rendering.
+- LF-102 includes both frontend and backend positive-number validation for salary-related amounts.
+- LF-103 adds a `designation` dropdown (`Mason`, `Electrician`, `Plumber`, `Supervisor`, `Helper`) and displays it in employee list.
+- LF-104 exports employee list to CSV including: name, designation, department, salary.
+- LF-105 fixes mobile employee list cutoff by enforcing horizontal scroll behavior.
+- Part 1 Overtime feature includes both frontend and backend validations, duplicate prevention, worker existence check, and monthly 60-hour cap.
+
+### Submission Commit Structure
+- One commit per ticket: `LF-101` through `LF-105`
+- Separate commit for overtime feature (Part 1)
+
   * [Configuration and Setup](#configuration-and-setup)
   * [Key Features](#key-features)
   * [Technologies used](#technologies-used)
