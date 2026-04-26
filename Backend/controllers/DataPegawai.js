@@ -8,7 +8,7 @@ export const getDataPegawai = async (req, res) => {
         const response = await DataPegawai.findAll({
             attributes: [
                 'id', 'nik', 'nama_pegawai',
-                'jenis_kelamin', 'jabatan', 'tanggal_masuk',
+                'jenis_kelamin', 'jabatan', 'designation', 'tanggal_masuk',
                 'status', 'photo', 'hak_akses'
             ]
         });
@@ -24,7 +24,7 @@ export const getDataPegawaiByID = async (req, res) => {
         const response = await DataPegawai.findOne({
             attributes: [
                 'id', 'nik', 'nama_pegawai',
-                'jenis_kelamin', 'jabatan', 'username', 'tanggal_masuk',
+                'jenis_kelamin', 'jabatan', 'designation', 'username', 'tanggal_masuk',
                 'status', 'photo', 'hak_akses'
             ],
             where: {
@@ -47,7 +47,7 @@ export const getDataPegawaiByNik = async (req, res) => {
         const response = await DataPegawai.findOne({
             attributes: [
                 'id', 'nik', 'nama_pegawai',
-                'jenis_kelamin', 'jabatan', 'tanggal_masuk',
+                'jenis_kelamin', 'jabatan', 'designation', 'tanggal_masuk',
                 'status', 'photo', 'hak_akses'
             ],
             where: {
@@ -71,7 +71,7 @@ export const getDataPegawaiByName = async (req, res) => {
         const response = await DataPegawai.findOne({
             attributes: [
                 'id', 'nik', 'nama_pegawai',
-                'jenis_kelamin', 'jabatan', 'tanggal_masuk',
+                'jenis_kelamin', 'jabatan', 'designation', 'tanggal_masuk',
                 'status', 'photo', 'hak_akses'
             ],
             where: {
@@ -93,7 +93,7 @@ export const createDataPegawai = async (req, res) => {
     const {
         nik, nama_pegawai,
         username, password, confPassword, jenis_kelamin,
-        jabatan, tanggal_masuk,
+        jabatan, designation, tanggal_masuk,
         status, hak_akses
     } = req.body;
 
@@ -135,6 +135,7 @@ export const createDataPegawai = async (req, res) => {
                 password: hashPassword,
                 jenis_kelamin: jenis_kelamin,
                 jabatan: jabatan,
+                designation: designation,
                 tanggal_masuk: tanggal_masuk,
                 status: status,
                 photo: fileName,
@@ -163,7 +164,7 @@ export const updateDataPegawai = async (req, res) => {
     const {
         nik, nama_pegawai,
         username, jenis_kelamin,
-        jabatan, tanggal_masuk,
+        jabatan, designation, tanggal_masuk,
         status, hak_akses
     } = req.body;
 
@@ -174,6 +175,7 @@ export const updateDataPegawai = async (req, res) => {
             username: username,
             jenis_kelamin: jenis_kelamin,
             jabatan: jabatan,
+            designation: designation,
             tanggal_masuk: tanggal_masuk,
             status: status,
             hak_akses: hak_akses

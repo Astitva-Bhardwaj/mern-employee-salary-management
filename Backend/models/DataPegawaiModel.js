@@ -35,6 +35,10 @@ const DataPegawai = db.define('data_pegawai', {
         type: DataTypes.STRING(50),
         allowNull: false
     },
+    designation: {
+        type: DataTypes.STRING(50),
+        allowNull: false
+    },
     tanggal_masuk: {
         type: DataTypes.STRING,
         allowNull: false
