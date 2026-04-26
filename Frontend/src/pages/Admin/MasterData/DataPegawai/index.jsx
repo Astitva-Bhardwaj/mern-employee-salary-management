@@ -228,20 +228,23 @@ const DataPegawai = () => {
                     </div>
                 </div>
 
-                <div className="max-w-full overflow-x-auto py-4">
-                    <table className="w-full table-auto">
+                <p className='block text-xs text-bodydark2 mb-2 md:hidden'>
+                    Geser tabel ke kanan untuk melihat semua kolom.
+                </p>
+                <div className="max-w-full overflow-x-auto py-4 -mx-5 px-5 sm:mx-0 sm:px-0">
+                    <table className="w-full min-w-[1200px] table-auto">
                         <thead>
                             <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">No</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">Photo</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">NIK</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white">Nama Pegawai</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white">Jenis Kelamin</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white">Designation</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white">Tanggal Masuk</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white">Status</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white">Hak Akses</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white">Aksi</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11 whitespace-nowrap">No</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11 whitespace-nowrap">Photo</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11 whitespace-nowrap">NIK</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white whitespace-nowrap">Nama Pegawai</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white whitespace-nowrap">Jenis Kelamin</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white whitespace-nowrap">Designation</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white whitespace-nowrap">Tanggal Masuk</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white whitespace-nowrap">Status</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white whitespace-nowrap">Hak Akses</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white whitespace-nowrap">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
