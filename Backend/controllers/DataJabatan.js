@@ -2,6 +2,23 @@ import DataJabatan from "../models/DataJabatanModel.js";
 import DataPegawai from "../models/DataPegawaiModel.js";
 import { Op } from "sequelize";
 
+const validatePositiveSalaryFields = ({ gaji_pokok, tj_transport, uang_makan }) => {
+    const salaryFields = [
+        { label: "Gaji pokok", value: gaji_pokok },
+        { label: "Tunjangan transport", value: tj_transport },
+        { label: "Uang makan", value: uang_makan },
+    ];
+
+    for (const field of salaryFields) {
+        const numericValue = Number(field.value);
+        if (!Number.isFinite(numericValue) || numericValue <= 0) {
+            return `${field.label} harus berupa angka positif`;
+        }
+    }
+
+    return null;
+};
+
 // menampilkan semua data jabatan
 export const getDataJabatan = async (req, res) => {
     try {
@@ -57,6 +74,11 @@ export const createDataJabatan = async (req, res) => {
         id_jabatan, nama_jabatan, gaji_pokok, tj_transport, uang_makan
     } = req.body;
     try {
+        const validationError = validatePositiveSalaryFields({ gaji_pokok, tj_transport, uang_makan });
+        if (validationError) {
+            return res.status(400).json({ success: false, message: validationError, msg: validationError });
+        }
+
         if (req.hak_akses === "admin") {
             await DataJabatan.create({
                 id_jabatan: id_jabatan,
@@ -94,6 +116,11 @@ export const updateDataJabatan = async (req, res) => {
         });
         if (!jabatan) return res.status(404).json({ msg: "Data tidak ditemukan" });
         const { nama_jabatan, gaji_pokok, tj_transport, uang_makan } = req.body;
+        const validationError = validatePositiveSalaryFields({ gaji_pokok, tj_transport, uang_makan });
+        if (validationError) {
+            return res.status(400).json({ msg: validationError });
+        }
+
         if (req.hak_akses === "admin") {
             await DataJabatan.update({
                 nama_jabatan, gaji_pokok, tj_transport, uang_makan

@@ -5,6 +5,14 @@ import PotonganGaji from "../models/PotonganGajiModel.js";
 import moment from "moment";
 import "moment/locale/id.js";
 
+const validatePositiveAmount = (value, fieldLabel) => {
+  const numericValue = Number(value);
+  if (!Number.isFinite(numericValue) || numericValue <= 0) {
+    return `${fieldLabel} harus berupa angka positif`;
+  }
+  return null;
+};
+
 // method untuk menampilkan semua Data Kehadiran
 export const viewDataKehadiran = async (req, res) => {
   let resultDataKehadiran = [];
@@ -186,6 +194,11 @@ export const deleteDataKehadiran = async (req, res) => {
 export const createDataPotonganGaji = async (req, res) => {
   const { id, potongan, jml_potongan } = req.body;
   try {
+    const validationError = validatePositiveAmount(jml_potongan, "Jumlah potongan");
+    if (validationError) {
+      return res.status(400).json({ msg: validationError });
+    }
+
     const nama_potongan = await PotonganGaji.findOne({
       where: {
         potongan: potongan,
@@ -236,6 +249,11 @@ export const viewDataPotonganByID = async (req, res) => {
 // method untuk update Data Potongan
 export const updateDataPotongan = async (req, res) => {
   try {
+    const validationError = validatePositiveAmount(req.body.jml_potongan, "Jumlah potongan");
+    if (validationError) {
+      return res.status(400).json({ msg: validationError });
+    }
+
     await PotonganGaji.update(req.body, {
       where: {
         id: req.params.id,
