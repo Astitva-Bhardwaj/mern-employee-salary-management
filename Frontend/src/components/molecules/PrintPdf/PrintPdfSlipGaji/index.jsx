@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import LogoPt from "../../../../assets/images/logo/logo-dark.svg";
 import LogoSipeka from "../../../../assets/images/logo/logo-sipeka.png";
 import { useReactToPrint } from "react-to-print";
@@ -22,8 +22,12 @@ const PrintPdfSlipGaji = () => {
     const year = searchParams.get("year");
     const name = searchParams.get("name");
 
-    const [bulan, setBulan] = useState("");
-    const [tahun, setTahun] = useState("");
+    const formatDateToDDMMYYYY = (date) => {
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
 
     const { isError, user } = useSelector((state) => state.auth);
     const { dataSlipGaji } = useSelector((state) => state.slipGaji);
@@ -65,18 +69,6 @@ const PrintPdfSlipGaji = () => {
             handlePrint();
         }
     }, [isError, user, navigate, handlePrint]);
-
-    useEffect(() => {
-        const today = new Date();
-        const monthNames = [
-            "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-            "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-        ];
-        const month = monthNames[today.getMonth()];
-        const year = today.getFullYear();
-        setBulan(month);
-        setTahun(year);
-    }, []);
 
     return (
         <>
@@ -231,7 +223,7 @@ const PrintPdfSlipGaji = () => {
                                     <span>{name}</span>
                                 </div>
                                 <div className="font-medium text-black dark:text-white">
-                                    <span className="text-right">Karawang, {`${new Date().getDate()} ${bulan} ${tahun}`}</span>
+                                    <span className="text-right">Karawang, {formatDateToDDMMYYYY(new Date())}</span>
                                     <br />
                                     <span>Finance</span>
                                     <br />
@@ -240,7 +232,7 @@ const PrintPdfSlipGaji = () => {
                                 </div>
                             </div>
                             <div className="italic text-black dark:text-white mt-30">
-                                Dicetak Pada : {`${new Date().getDate()} ${bulan} ${tahun}`}
+                                Dicetak Pada : {formatDateToDDMMYYYY(new Date())}
                             </div>
                         </div>
                     );
